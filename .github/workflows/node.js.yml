@@ -25,7 +25,5 @@ jobs:
           cd /var/www/html/midjourney-web/freelance-midjourney-web-main
           git pull origin main
           npm install
-          sudo kill -9 $(sudo lsof -t -i:3000)
-          pm2 stop service.sh
-          pm2 start service.sh
+          pm2 start npm --name "next" -- run dev
           
