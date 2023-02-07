@@ -24,4 +24,5 @@ jobs:
           cd /var/www/html/midjourney-web/freelance-midjourney-web-main
           git pull origin main
           source ~/.profile
-          npm run build
+          npm install
+          pm2 restart npm --name "next" -- run dev
