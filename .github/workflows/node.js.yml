@@ -25,5 +25,5 @@ jobs:
           cd /var/www/html/midjourney-web/freelance-midjourney-web-main
           git pull origin main
           npm install
-          cd /var/www/html/midjourney-web/freelance-midjourney-web-main && pm2 start npm --name "nextapp" -- start
+          cd /var/www/html/midjourney-web/freelance-midjourney-web-main ; pm2 start npm --name "nextapp" -- start
           
