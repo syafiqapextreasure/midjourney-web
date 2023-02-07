@@ -24,6 +24,7 @@ jobs:
           cd /var/www/html/midjourney-web/freelance-midjourney-web-main
           git pull origin main
           source ~/.profile
+          source ~/.bashrc
           nvm use 16
           npm install
           pm2 restart 0
