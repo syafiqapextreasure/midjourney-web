@@ -26,5 +26,6 @@ jobs:
           git pull origin main
           npm install
           sudo kill -9 $(sudo lsof -t -i:3000)
+          pm2 kill
           pm2 start service.sh
           
