@@ -24,7 +24,6 @@ jobs:
           source /home/ubuntu/.bashrc
           cd /var/www/html/midjourney-web/freelance-midjourney-web-main
           git pull origin main
-          nvm use 16
           npm install
           pm2 stop npm --name "next" -- run dev
           pm2 start npm --name "next" -- run dev
