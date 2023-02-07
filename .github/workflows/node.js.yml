@@ -21,10 +21,10 @@ jobs:
          username: ${{secrets.SSH_USERNAME}}
 
          script: |
-          cd /var/www/html/midjourney-web/freelance-midjourney-web-main
-          git pull origin main
           source /home/ubuntu/.profile
           source /home/ubuntu/.bashrc
+          cd /var/www/html/midjourney-web/freelance-midjourney-web-main
+          git pull origin main
           nvm use 16
           npm install
           pm2 stop npm --name "next" -- run dev
