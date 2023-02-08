@@ -24,6 +24,7 @@ jobs:
           source /home/ubuntu/.bashrc
           cd /var/www/html/midjourney-web
           git pull origin main
+          export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v16.19.0/bin;
           npm install
           pm2 restart 0
           
