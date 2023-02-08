@@ -22,7 +22,7 @@ jobs:
 
          script: |
           source /home/ubuntu/.bashrc
-          cd /var/www/html/midjourney-web/freelance-midjourney-web-main
+          cd /var/www/html/midjourney-web
           git pull origin main
           npm install
           pm2 start npm --name "nextapp" -- start
