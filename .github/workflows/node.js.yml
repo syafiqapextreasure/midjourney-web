@@ -27,5 +27,7 @@ jobs:
           export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v16.19.0/bin;
           npm install
           - run: chmod +x ./service.sh
-          - run: /usr/bin/bash ./service.sh
+          - run: export NVM_DIR=~/.nvm
+          - run: source ~/.nvm/nvm.sh
+          - run: pm2 restart 0
           
