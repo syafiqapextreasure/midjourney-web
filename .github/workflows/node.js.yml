@@ -27,5 +27,5 @@ jobs:
           export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v16.19.0/bin;
           npm install
           - run: chmod +x ./service.sh
-          - run: bash ./service.sh
+          - run: /usr/bin/bash ./service.sh
           
