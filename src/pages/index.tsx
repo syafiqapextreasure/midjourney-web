@@ -3,13 +3,16 @@ import { type NextPage } from "next";
 import Head from "next/head";
 
 import { api } from "../utils/api";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useCallback } from "react";
 import { MessageRes, InteractionRes } from "../server/logic/bot";
+import { SvgConverter } from "./svg";
+import { Button, Input, TextField } from "@mui/material";
+import ReactMarkdown from 'react-markdown'
 
 const Answer = (props: { myPrompt: string }) => {
     const promptEmpty = !props.myPrompt || props.myPrompt.trim() === "";
     if (promptEmpty) {
-        return <div>Enter the prompt</div>;
+        return <div></div>;
     }
     
     // const data = api.example.hello.useQuery(props.myPrompt);
@@ -23,7 +26,7 @@ const Answer = (props: { myPrompt: string }) => {
     return <div>loading... {props.myPrompt}</div>;
 };
 
-const Message = (props: {setInterId: Function, setInterMsgId: Function}) => {
+const Message = (props: {setInterId: Function, setInterMsgId: Function, setConvertUrl: Function}) => {
     // https://stackoverflow.com/a/57414544
     const [timer, setTimer] = useState(new Date());
 
@@ -51,44 +54,48 @@ const Message = (props: {setInterId: Function, setInterMsgId: Function}) => {
         return (
             <Fragment key={timer.toISOString()}>{messages.map((message: MessageRes) => {
                 return (
-                    <><img src={message.url} style={{ width: "50%" }}></img>
+                    <Fragment key={message.id}> <img src={message.url} style={{ width: "50%" }}></img>
+                    <ReactMarkdown>{message.content.replace("<@685528491361435713>", "@piko")}</ReactMarkdown>
                     <div className="btn-group">
-                        {message.interactions.map((interaction: InteractionRes) => {
-                            return <button data-inline="true" onClick={() => handleInteract(interaction.id, message.id)}>{interaction.label?interaction.label: "reroll"}</button>
-                        })
-                        }
-                    </div></>
+                        {[...message.interactions.map((interaction: InteractionRes) => {
+                            return <Button variant="outlined" data-inline="true" onClick={() => handleInteract(interaction.id, message.id)} key={message.id + interaction.id}>{interaction.label?interaction.label: interaction.emoji}</Button>
+                        }),
+                        !message.interactions.find(i => i.label === "U1") && message.interactions.length?
+                            <Button variant="outlined" color="error" onClick={() => {props.setConvertUrl(message.url)}} key={message.id + "-convert"}>Convert</Button>:
+                            <></>
+                        ]}
+                    </div>
+                    </Fragment>
                 )
             })
             }</Fragment>
         )
     }
 
-    return <div>loading...</div>;
+    return <div>Loading...</div>;
 }
 
 const Interact = (props: { id: string, msgId: string}) => {
     console.log(`[Interact] id: ${props.id}, msgId: ${props.msgId}`);
-    if (!props.msgId || props.msgId === "") return <div>no interact...</div>;
+    if (!props.msgId || props.msgId === "") return null;
 
     const data = api.example.interact.useQuery(props, { refetchOnWindowFocus: false });
     if (data) {
-        return <div>Interacted {data.data}. (Waiting to start)</div>;
+        return <div></div>;
     }
 
-    return <div>no interact...</div>;
+    return null;
 }
 
 const Home: NextPage = () => {
     const [myPrompt, setPrompt] = useState("");
     const [interId, setInterId] = useState("");
     const [interMsgId, setInterMsgId] = useState("");
+    const [convertUrl, setConvertUrl] = useState("");
+    const [text, setText] = useState("");
 
     const handleClick = () => {
-        // get text from textarea
-        const text = document.querySelector("textarea")?.value;
         if (!text) return;
-
         setPrompt(text);
     };
 
@@ -102,15 +109,12 @@ const Home: NextPage = () => {
 
         <main>
             <div className={styles.container}>
-                <h1>
-                Create <span className={styles.pinkSpan}>T3</span> App
-                </h1>
-                {/* on submit, call api */}
-                <textarea className={styles.textarea}> </textarea>
-                <button onClick={handleClick} style={{ width: "50%" }}>Submit</button>
+                <TextField placeholder="Enter Prompt" variant="outlined" fullWidth={true} multiline={true} rows={5} onChange={(e)=>setText(e.target.value)}></TextField>
+                <Button variant="outlined" onClick={handleClick} style={{ width: "50%" }}>Submit</Button>
                 <Answer myPrompt={myPrompt}/>
-                <Message key={myPrompt} setInterId={setInterId} setInterMsgId={setInterMsgId}></Message>
+                <SvgConverter url={convertUrl}></SvgConverter>
                 <Interact id={interId} msgId={interMsgId}></Interact>
+                <Message key={myPrompt} setInterId={setInterId} setInterMsgId={setInterMsgId} setConvertUrl={setConvertUrl}></Message>
             </div>
         </main>
         </>

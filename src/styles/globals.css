@@ -14,3 +14,21 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+.grid-item {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+
+/** highlight path of svg on :hover */
+svg > path:hover {
+  stroke: #ff3e00;
+  stroke-width: 2px;
+}
