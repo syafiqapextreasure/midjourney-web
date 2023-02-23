@@ -48,7 +48,8 @@ cp example.env .env
 vim .env
 ```
 
-Add your Discord Auth token, Channel ID, Discord Bot Token, AND your vtracer dir using `which vtracer`
+Add your Discord Auth token, Channel ID, Discord Bot Token, AND your vtracer dir using `which vtracer`.
+MIDJOURNEY_VERSION can be obtained by sending a prompt to MidJourney and inspect the network payload.
 
 # Run 
 

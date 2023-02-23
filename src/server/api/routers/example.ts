@@ -19,9 +19,9 @@ export const exampleRouter = createTRPCRouter({
                 greeting: `Prompt ${res}`,
             };
         } catch (e) {
-            console.log(e);
+            console.log("sendPrompt err", e);
             return {
-                greeting: `Error ${e}`
+                greeting: `Error ${JSON.stringify(e)}`
             };
         }
     }),
